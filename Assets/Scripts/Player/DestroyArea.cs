@@ -1,33 +1,13 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
-public class DestroyArea : GameArea
+public class DestroyArea : MonoBehaviour
 {
-    public event Action<Ball> OnBallTriggeredEnter;
+    [SerializeField] private Transform _destroyAnchor;
 
 
-    public void Init(Rect cameraRect)
+    public bool IsBallTriggerArea(Ball ball)
     {
-        base.Init(cameraRect);
-
-        SetDestroyAreaScale();
-    }
-
-    private void SetDestroyAreaScale()
-    {
-        Vector3 destroyAreaScale = Vector3.one;
-        destroyAreaScale.x = _areaWidth * destroyAreaScale.x;
-
-        transform.localScale = destroyAreaScale;
-    }
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.TryGetComponent(out Ball ball))
-        {
-            OnBallTriggeredEnter?.Invoke(ball);
-        }
+        return ball.transform.position.y < _destroyAnchor.position.y;
     }
 }

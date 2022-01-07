@@ -9,7 +9,7 @@ public class BallContainer : MonoBehaviour
 
     [SerializeField] private Spawner _spawner;
 
-    private List<Ball> _spawnedBalls;
+    private List<Ball> _spawnedBalls = new List<Ball>();
 
 
     private void Start()

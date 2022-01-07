@@ -6,6 +6,7 @@ using UnityEngine;
 public class BallBorderHandler : MonoBehaviour
 {
     private Player _player;
+    private BallContainer _ballContainer;
 
     private DestroyArea _destroyArea;
 
@@ -15,17 +16,22 @@ public class BallBorderHandler : MonoBehaviour
         _destroyArea = GetComponent<DestroyArea>();
     }
 
-    public void Init(Rect cameraRect, Player player)
+    public void Init(Player player, BallContainer ballContainer)
     {
         _player = player;
-
-        _destroyArea.Init(cameraRect);
-        _destroyArea.OnBallTriggeredEnter += BallTriggerBorder;
+        _ballContainer = ballContainer;
     }
 
-    private void OnDestroy()
+
+    private void Update()
     {
-        _destroyArea.OnBallTriggeredEnter -= BallTriggerBorder;
+        foreach (Ball ball in _ballContainer.SpawnedBalls)
+        {
+            if (_destroyArea.IsBallTriggerArea(ball))
+            {
+                BallTriggerBorder(ball);
+            }
+        }
     }
 
 

@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PauseView : BaseView
+public class GameSession : MonoBehaviour
 {
-   
+    private void Init()
+    {
+
+    }
 }
