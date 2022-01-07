@@ -28,10 +28,14 @@ public class BallEffecter : MonoBehaviour
     {
         //стоит вынести в отдельный компонент
         ParticleSystem deathParticleEffect =
-            Instantiate(_deathParticleEffectPrefab, transform.position, Quaternion.identity);
+            Instantiate(_deathParticleEffectPrefab, transform.position, Quaternion.identity, transform.parent);
 
         ParticleSystem.MainModule deathParticleEffectMain =
             deathParticleEffect.main;
         deathParticleEffectMain.startColor = _color;
+
+        float deatParticleEffectLifetime = 
+            deathParticleEffect.main.startLifetime.constant;
+        Destroy(deathParticleEffect.gameObject, deatParticleEffectLifetime);
     }
 }

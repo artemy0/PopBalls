@@ -8,6 +8,7 @@ public class Spawner : MonoBehaviour
 
     [SerializeField] private BallFactory _ballFactory;
     [Space(10)]
+    [SerializeField] private Transform spawn—ontainer;
     [SerializeField] private float _timeBetweenSpawn;
 
     private SpawnArea _spawnArea;
@@ -40,7 +41,7 @@ public class Spawner : MonoBehaviour
     private void Spawn()
     {
         Vector3 spawnPosition = _spawnArea.GetSpawnPosition();
-        Ball ball = _ballFactory.Spawn(spawnPosition, Quaternion.identity, transform);
+        Ball ball = _ballFactory.Spawn(spawnPosition, Quaternion.identity, spawn—ontainer);
 
         OnBallSpawned?.Invoke(ball);
     }

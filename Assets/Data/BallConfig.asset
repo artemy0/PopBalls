@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BallConfig
   m_EditorClassIdentifier: 
   _health:
-    _min: 10
+    _min: 25
     _max: 75
   _moveSpeed:
     _min: 0.8
