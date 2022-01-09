@@ -8,6 +8,9 @@ public class ScoreHandler : MonoBehaviour
     public event Action<int> OnScoreUpdated;
     public event Action<int> OnBestScoreUpdated;
 
+    public int Score => _score;
+    public int BestScore => _bestScore;
+
     private BallContainer _ballContainer;
     private ISaveSystem _saveSystem;
 

@@ -8,6 +8,7 @@ public class BootstrapIniter : MonoBehaviour
     [SerializeField] private BallBorderHandler _ballBorderHandler;
     [SerializeField] private BallContainer _ballContainer;
     [SerializeField] private ScoreHandler _scoreHandler;
+    [SerializeField] private GameSession _gameSession;
 
     [SerializeField] private Camera _mainCamera;
     [SerializeField] private Player _player;
@@ -15,6 +16,7 @@ public class BootstrapIniter : MonoBehaviour
     private IInput _input;
     private ISaveSystem _saveSystem;
     private TimeController _timeController;
+    private SceneLoader _sceneLoader;
 
 
     private void Start()
@@ -30,6 +32,8 @@ public class BootstrapIniter : MonoBehaviour
         InitBallDetection();
         InitSaveSystem();
         InitScoreSystem();
+        InitTimeController();
+        InitGameSession();
     }
 
 
@@ -43,7 +47,7 @@ public class BootstrapIniter : MonoBehaviour
         _input = new MouseInput();
 
         _ballDetectionHandler.Init(_mainCamera, _input);
-        _ballClickHandler.Init(_ballDetectionHandler, _player);
+        _ballClickHandler.Init(_ballDetectionHandler, _player, _gameSession);
 
         _ballBorderHandler.Init(_player, _ballContainer);
     }
@@ -61,5 +65,12 @@ public class BootstrapIniter : MonoBehaviour
     private void InitTimeController()
     {
         _timeController = new TimeController();
+    }
+
+    private void InitGameSession()
+    {
+        _sceneLoader = new SceneLoader();
+
+        _gameSession.Init(_player, _scoreHandler, _timeController, _sceneLoader);
     }
 }
