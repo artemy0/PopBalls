@@ -50,6 +50,13 @@ public class GameSession : MonoBehaviour
 
     private void OnDestroy()
     {
+        _player.OnDie -= LoseGame;
+        _player.OnHealthChanged -= _playView.UpdateHealthSlider;
+
+
+        _scoreHandler.OnScoreUpdated -= _playView.UpdateScoreText;
+
+
         _playView.OnPauseButtonClicked -= PauseGame;
         _playView.OnRestartButtonClicked -= RestartGame;
 
