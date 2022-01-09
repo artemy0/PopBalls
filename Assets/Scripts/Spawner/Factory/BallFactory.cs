@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 //[CreateAssetMenu(fileName = "Ball Factory", menuName = "Factories/Ball/BallFactory")]

@@ -2,14 +2,18 @@ using UnityEngine;
 
 public class BootstrapIniter : MonoBehaviour
 {
+    [SerializeField] private BallContainer _ballContainer; //можно отказаться от MB, как и многие другие компоненты тут
     [SerializeField] private Spawner _spawner;
+    [Space(10)]
     [SerializeField] private BallClickHandler _ballClickHandler;
     [SerializeField] private BallDetectionHandler _ballDetectionHandler;
+    [Space(10)]
     [SerializeField] private BallBorderHandler _ballBorderHandler;
-    [SerializeField] private BallContainer _ballContainer;
+    [Space(10)]
     [SerializeField] private ScoreHandler _scoreHandler;
+    [Space(10)]
     [SerializeField] private GameSession _gameSession;
-
+    [Space(20)]
     [SerializeField] private Camera _mainCamera;
     [SerializeField] private Player _player;
 
@@ -28,14 +32,29 @@ public class BootstrapIniter : MonoBehaviour
     //я не хотел использовать Zenject в этом проекте
     private void Init()
     {
+        InitSaveSystem();
+        InitTimeController();
+        InitSceneLoader();
+        
         InitSpawner();
         InitBallDetection();
-        InitSaveSystem();
         InitScoreSystem();
-        InitTimeController();
         InitGameSession();
     }
 
+
+    private void InitSaveSystem()
+    {
+        _saveSystem = new PlayerPrefsSaveSystem();
+    }
+    private void InitTimeController()
+    {
+        _timeController = new TimeController();
+    }
+    private void InitSceneLoader()
+    {
+        _sceneLoader = new SceneLoader();
+    }
 
     private void InitSpawner()
     {
@@ -52,25 +71,13 @@ public class BootstrapIniter : MonoBehaviour
         _ballBorderHandler.Init(_player, _ballContainer);
     }
 
-    private void InitSaveSystem()
-    {
-        _saveSystem = new PlayerPrefsSaveSystem();
-    }
-
     private  void InitScoreSystem()
     {
         _scoreHandler.Init(_ballContainer, _saveSystem);
     }
 
-    private void InitTimeController()
-    {
-        _timeController = new TimeController();
-    }
-
     private void InitGameSession()
     {
-        _sceneLoader = new SceneLoader();
-
         _gameSession.Init(_player, _scoreHandler, _timeController, _sceneLoader);
     }
 }

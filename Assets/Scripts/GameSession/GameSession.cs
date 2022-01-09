@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameSession : MonoBehaviour
@@ -8,7 +6,6 @@ public class GameSession : MonoBehaviour
     public event Action OnGamePaused;
     public event Action OnGameResumed;
 
-    [Header("UI")]
     [SerializeField] private PlayView _playView;
     [SerializeField] private PauseView _pauseView;
     [SerializeField] private LoseView _loseView;
@@ -25,20 +22,20 @@ public class GameSession : MonoBehaviour
     public void Init(Player player, ScoreHandler scoreHandler, TimeController timeController, SceneLoader sceneLoader)
     {
         _player = player;
-        _player.OnDie += LoseGame;
-        _player.OnHealthChanged += _playView.UpdateHealthSlider;
-
-
         _scoreHandler = scoreHandler;
-        _scoreHandler.OnScoreUpdated += _playView.UpdateScoreText;
-
-
         _timeController = timeController;
         _sceneLoader = sceneLoader;
 
 
         _currentView = _playView;
         _currentView.OpenView();
+
+
+        _player.OnDie += LoseGame;
+        _player.OnHealthChanged += _playView.UpdateHealthSlider;
+
+        _scoreHandler.OnScoreUpdated += _playView.UpdateScoreText;
+
 
         _playView.OnPauseButtonClicked += PauseGame;
         _playView.OnRestartButtonClicked += RestartGame;
@@ -52,7 +49,6 @@ public class GameSession : MonoBehaviour
     {
         _player.OnDie -= LoseGame;
         _player.OnHealthChanged -= _playView.UpdateHealthSlider;
-
 
         _scoreHandler.OnScoreUpdated -= _playView.UpdateScoreText;
 
