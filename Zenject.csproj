@@ -378,7 +378,6 @@
     <None Include="Assets\Plugins\Zenject\OptionalExtras\SampleGame1 (Beginner)\Media\Fonts\Space.txt" />
     <None Include="Assets\Plugins\Zenject\LICENSE.txt" />
     <None Include="Assets\Plugins\Zenject\OptionalExtras\SampleGame1 (Beginner)\Media\Imported\Shaders\Add_Layer.shader" />
-    <None Include="Assets\Plugins\Zenject\Source\Usage\link.xml" />
     <None Include="Assets\Plugins\Zenject\Version.txt" />
     <None Include="Assets\Plugins\Zenject\zenject.asmdef" />
     <None Include="Assets\Plugins\Zenject\OptionalExtras\UnitTests\ReadMe.txt" />

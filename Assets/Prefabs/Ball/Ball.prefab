@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 867f71552fb271849bbb931613609b5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitShakeDuration: 0.25
-  _hitShakeStrength: 1
+  _hitShakeDuration: 0.2
+  _hitShakeStrength: 0.5
   _hitShakeVibrato: 5
   _deathParticleEffectPrefab: {fileID: 4304977691967656355, guid: 84364d29a9b058f479121b765494e55c, type: 3}
