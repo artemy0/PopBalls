@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Zenject;
 
-public class ScoreHandler : MonoBehaviour
+public class ScoreHandler : IInitializable, IDisposable
 {
     public event Action<int> OnScoreUpdated;
     public event Action<int> OnBestScoreUpdated;
@@ -18,11 +16,14 @@ public class ScoreHandler : MonoBehaviour
     private int _bestScore;
 
 
-    public void Init(BallContainer ballContainer, ISaveSystem saveSystem)
+    public ScoreHandler(BallContainer ballContainer, ISaveSystem saveSystem)
     {
         _ballContainer = ballContainer;
         _saveSystem = saveSystem;
+    }
 
+    public void Initialize()
+    {
         SaveData saveData = _saveSystem.Load();
 
         _score = 0;
@@ -31,7 +32,7 @@ public class ScoreHandler : MonoBehaviour
         _ballContainer.OnSpawnedBallPopped += AddScore;
     }
 
-    private void OnDestroy()
+    public void Dispose()
     {
         SaveData saveData = _saveSystem.Load();
         saveData.BestScore = _bestScore;

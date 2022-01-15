@@ -4,5 +4,4 @@ using UnityEngine;
 public interface IInput
 {
     public event Action<Vector3> OnClicked;
-    public void OnUpdate();
 }

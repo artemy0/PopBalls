@@ -1,17 +1,16 @@
 using System;
-using UnityEngine;
+using Zenject;
 
-public class GameSession : MonoBehaviour
+public class GameSession : IInitializable, IDisposable
 {
     public event Action OnGamePaused;
     public event Action OnGameResumed;
 
-    [SerializeField] private PlayView _playView;
-    [SerializeField] private PauseView _pauseView;
-    [SerializeField] private LoseView _loseView;
+    private PlayView _playView;
+    private PauseView _pauseView;
+    private LoseView _loseView;
 
     private BaseView _currentView;
-
 
     private Player _player;
     private ScoreHandler _scoreHandler;
@@ -19,18 +18,27 @@ public class GameSession : MonoBehaviour
     private SceneLoader _sceneLoader;
 
 
-    public void Init(Player player, ScoreHandler scoreHandler, TimeController timeController, SceneLoader sceneLoader)
+    public GameSession(Player player, ScoreHandler scoreHandler, 
+        TimeController timeController, SceneLoader sceneLoader,
+        PlayView playView, PauseView pauseView, LoseView loseView)
     {
         _player = player;
         _scoreHandler = scoreHandler;
+
         _timeController = timeController;
         _sceneLoader = sceneLoader;
+
+        _playView = playView;
+        _pauseView = pauseView;
+        _loseView = loseView;
 
 
         _currentView = _playView;
         _currentView.OpenView();
+    }
 
-
+    public void Initialize()
+    {
         _player.OnDie += LoseGame;
         _player.OnHealthChanged += _playView.UpdateHealthSlider;
 
@@ -45,7 +53,7 @@ public class GameSession : MonoBehaviour
         _loseView.OnRestartButtonClicked += RestartGame;
     }
 
-    private void OnDestroy()
+    public void Dispose()
     {
         _player.OnDie -= LoseGame;
         _player.OnHealthChanged -= _playView.UpdateHealthSlider;
@@ -75,6 +83,7 @@ public class GameSession : MonoBehaviour
 
         OnGamePaused?.Invoke();
     }
+
     private void ResumeGame()
     {
         _currentView.CloseView();
@@ -85,6 +94,7 @@ public class GameSession : MonoBehaviour
 
         OnGameResumed?.Invoke();
     }
+
     private void LoseGame()
     {
         _currentView.CloseView();
@@ -98,6 +108,7 @@ public class GameSession : MonoBehaviour
 
         OnGamePaused?.Invoke();
     }
+
     private void RestartGame()
     {
         _timeController.ResumeTime();

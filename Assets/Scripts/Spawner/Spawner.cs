@@ -21,8 +21,9 @@ public class Spawner : MonoBehaviour
         _spawnArea = GetComponent<SpawnArea>();
     }
 
-    public void Init(Rect cameraRect)
+    public void Init(Camera camera)
     {
+        Rect cameraRect = camera.pixelRect;
         _spawnArea.Init(cameraRect);
     }
 

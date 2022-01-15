@@ -1,20 +1,27 @@
+using System;
 using UnityEngine;
+using Zenject;
 
-public class BallClickHandler : MonoBehaviour
+public class BallClickHandler : IInitializable, IDisposable
 {
-    [SerializeField] private int _clickDamage = 10;
-    
     private BallDetectionHandler _ballDetectionHandler;
     private Player _player;
     private GameSession _gameSession;
 
+    private int _clickDamage;
 
-    public void Init(BallDetectionHandler ballDetectionHandler, Player player, GameSession gameSession)
+
+    public BallClickHandler(BallDetectionHandler ballDetectionHandler, Player player, GameSession gameSession)
     {
         _ballDetectionHandler = ballDetectionHandler;
         _player = player;
         _gameSession = gameSession;
 
+        _clickDamage = player.Dagame;
+    }
+
+    public void Initialize()
+    {
         _ballDetectionHandler.OnBallClicked += OnBallClick;
         _player.OnDie += DisableInput;
 
@@ -22,7 +29,7 @@ public class BallClickHandler : MonoBehaviour
         _gameSession.OnGameResumed += EnableInput;
     }
 
-    private void OnDestroy()
+    public void Dispose()
     {
         _ballDetectionHandler.OnBallClicked -= OnBallClick;
         _player.OnDie -= DisableInput;
