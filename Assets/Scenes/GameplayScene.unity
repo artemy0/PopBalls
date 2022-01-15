@@ -2140,6 +2140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 100
+  _damage: 20
 --- !u!4 &1216165551
 Transform:
   m_ObjectHideFlags: 0
@@ -2189,6 +2190,9 @@ MonoBehaviour:
   _ballContainer: {fileID: 1426871199}
   _spawner: {fileID: 1039827528}
   _ballBorderHandler: {fileID: 814231806}
+  _playView: {fileID: 547326357}
+  _pauseView: {fileID: 610264511}
+  _loseView: {fileID: 338860253}
 --- !u!114 &1239386506
 MonoBehaviour:
   m_ObjectHideFlags: 0
