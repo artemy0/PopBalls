@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
+using Zenject;
 
-public class BallDetectionHandler : MonoBehaviour
+public class BallDetectionHandler : IInitializable, IDisposable
 {
     public event Action<Ball> OnBallClicked;
 
@@ -9,20 +10,18 @@ public class BallDetectionHandler : MonoBehaviour
     private IInput _input;
 
 
-    public void Init(Camera camera, IInput input)
+    public BallDetectionHandler(Camera camera, IInput input)
     {
         _camera = camera;
         _input = input;
+    }
 
+    public void Initialize()
+    {
         _input.OnClicked += OnClick;
     }
 
-    private void Update()
-    {
-        _input?.OnUpdate();
-    }
-
-    private void OnDestroy()
+    public void Dispose()
     {
         _input.OnClicked -= OnClick;
     }

@@ -7,10 +7,20 @@ public class BallContainer : MonoBehaviour
     public event Action<Ball> OnSpawnedBallPopped;
     public IReadOnlyList<Ball> SpawnedBalls => _spawnedBalls;
 
+    [SerializeField] private Camera _mainCamera;
+    [SerializeField] private Player _player;
+    [Space(10)]
     [SerializeField] private Spawner _spawner;
+    [SerializeField] private BallBorderHandler _ballBorderHandler;
 
     private List<Ball> _spawnedBalls = new List<Ball>();
 
+
+    private void Awake()
+    {
+        _spawner.Init(_mainCamera);
+        _ballBorderHandler.Init(_player, this);
+    }
 
     private void Start()
     {

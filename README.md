@@ -17,3 +17,4 @@
 # Плагины, использованные в проекте:
 * DOTween
 * TextMeshPro
+* Zenject

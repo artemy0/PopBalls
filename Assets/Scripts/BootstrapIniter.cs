@@ -1,83 +1,85 @@
 using UnityEngine;
+using Zenject;
 
-public class BootstrapIniter : MonoBehaviour
+public class BootstrapIniter : MonoInstaller
 {
-    [SerializeField] private BallContainer _ballContainer; //можно отказаться от MB, как и многие другие компоненты тут
-    [SerializeField] private Spawner _spawner;
-    [Space(10)]
-    [SerializeField] private BallClickHandler _ballClickHandler;
-    [SerializeField] private BallDetectionHandler _ballDetectionHandler;
-    [Space(10)]
-    [SerializeField] private BallBorderHandler _ballBorderHandler;
-    [Space(10)]
-    [SerializeField] private ScoreHandler _scoreHandler;
-    [Space(10)]
-    [SerializeField] private GameSession _gameSession;
-    [Space(20)]
     [SerializeField] private Camera _mainCamera;
     [SerializeField] private Player _player;
+    [Space(10)]
+    [SerializeField] private BallContainer _ballContainer;
+    [SerializeField] private Spawner _spawner;
+    [SerializeField] private BallBorderHandler _ballBorderHandler;
+    [Space(10)]
+    [SerializeField] private PlayView _playView;
+    [SerializeField] private PauseView _pauseView;
+    [SerializeField] private LoseView _loseView;
 
-    private IInput _input;
-    private ISaveSystem _saveSystem;
-    private TimeController _timeController;
-    private SceneLoader _sceneLoader;
 
-
-    private void Start()
+    public override void InstallBindings()
     {
-        Init();
+        BindMain();
+        BindGeneral();
+
+        BindBallHandle();
+
+        BindView();
+
+        BindGameStatistic();
+        BindGameSession();
+
+        BindPlayerInput();
     }
 
 
-    //я не хотел использовать Zenject в этом проекте
-    private void Init()
+    private void BindMain()
     {
-        InitSaveSystem();
-        InitTimeController();
-        InitSceneLoader();
-        
-        InitSpawner();
-        InitBallDetection();
-        InitScoreSystem();
-        InitGameSession();
+        Container.Bind<Player>().FromInstance(_player).AsSingle();
+        Container.Bind<Camera>().FromInstance(_mainCamera).AsSingle();
+    }
+    
+    private void BindGeneral()
+    {
+        Container.Bind<ISaveSystem>().To<PlayerPrefsSaveSystem>().FromNew().AsSingle();
+        Container.Bind<TimeController>().FromNew().AsSingle();
+        Container.Bind<SceneLoader>().FromNew().AsSingle();
+    }
+    
+    private void BindBallHandle()
+    {
+        Container.Bind<BallContainer>().FromInstance(_ballContainer).AsSingle();
+        Container.Bind<Spawner>().FromInstance(_spawner).AsSingle();
+        Container.Bind<BallBorderHandler>().FromInstance(_ballBorderHandler).AsSingle();
     }
 
-
-    private void InitSaveSystem()
+    private void BindView()
     {
-        _saveSystem = new PlayerPrefsSaveSystem();
+        Container.Bind<PlayView>().FromInstance(_playView).AsSingle();
+        Container.Bind<PauseView>().FromInstance(_pauseView).AsSingle();
+        Container.Bind<LoseView>().FromInstance(_loseView).AsSingle();
     }
-    private void InitTimeController()
+    
+    private void BindGameStatistic()
     {
-        _timeController = new TimeController();
-    }
-    private void InitSceneLoader()
-    {
-        _sceneLoader = new SceneLoader();
+        Container.BindInterfacesAndSelfTo<ScoreHandler>().FromNew().AsSingle();
     }
 
-    private void InitSpawner()
+    private void BindGameSession()
     {
-        _spawner.Init(_mainCamera.pixelRect);
+        Container.BindInterfacesAndSelfTo<GameSession>().FromNew().AsSingle();
     }
 
-    private void InitBallDetection()
+    private void BindPlayerInput()
     {
-        _input = new MouseInput();
+        if (SystemInfo.deviceType == DeviceType.Handheld) 
+        {
+            Container.BindInterfacesAndSelfTo<HandheldInput>().AsSingle();
+        }
+        else
+        {
+            Container.BindInterfacesAndSelfTo<DesktopInput>().AsSingle();
+        }
 
-        _ballDetectionHandler.Init(_mainCamera, _input);
-        _ballClickHandler.Init(_ballDetectionHandler, _player, _gameSession);
-
-        _ballBorderHandler.Init(_player, _ballContainer);
-    }
-
-    private  void InitScoreSystem()
-    {
-        _scoreHandler.Init(_ballContainer, _saveSystem);
-    }
-
-    private void InitGameSession()
-    {
-        _gameSession.Init(_player, _scoreHandler, _timeController, _sceneLoader);
+        Container.BindInterfacesAndSelfTo<BallDetectionHandler>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<BallClickHandler>().FromNew().AsSingle();
     }
 }
